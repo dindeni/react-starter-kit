@@ -25,6 +25,9 @@
     },
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "ignorePatterns": ["node_modules/", "build/", "coverage/", "configs/webpack/**/*.js"],

@@ -2,6 +2,15 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 
+const postcssLoader = {
+  loader: 'postcss-loader',
+  options: {
+    postcssOptions: {
+      config: './configs/webpack/postcss.config.js',
+    },
+  },
+};
+
 module.exports = {
   entry: './core/index.tsx',
   resolve: {
@@ -23,18 +32,27 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', postcssLoader],
       },
       {
         test: /\.(scss|sass)$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', postcssLoader, 'sass-loader'],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [
-          'file-loader?hash=sha512&digest=hex&name=img/[contenthash].[ext]',
-          'image-webpack-loader?bypassOnDebug&optipng.optimizationLevel=7&gifsicle.interlaced=false',
-        ],
+        test: /\.(jpe?g|png|gif)$/i,
+        type: "asset/inline",
+        parser: { dataUrlCondition: { maxSize: 15000 } },
+      },
+      {
+        test: /\.svg$/i,
+        type: 'asset',
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        resourceQuery: { not: [/url/] },
+        use: ['@svgr/webpack'],
       },
     ],
   },

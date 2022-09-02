@@ -7,6 +7,7 @@
   - Webpack v5
   - Babel
   - Styled components
+  - Sass
   - Jest
 
 ## Getting Started
